@@ -1,12 +1,17 @@
 <nav>
-    <br>
-    <button type="button" class="btn btn-primary">
-        <a href="{{ route('books.show', ['id' => 1]) }}" style="color: white; text-decoration: none;">Show Book</a>
+    {{-- Books --}}
+    <button type="button" class="btn {{ request()->is('books*') ? 'btn-warning' : 'btn-primary' }}">
+        <a href="{{ route('books.index') }}" style="color: white; text-decoration: none;">Books</a>
     </button>
 
+    {{-- Teachers --}}
+    <button type="button" class="btn {{ request()->is('teachers*') ? 'btn-warning' : 'btn-primary' }}">
+        <a href="{{ route('teachers.index') }}" style="color: white; text-decoration: none;">Teachers</a>
+    </button>
 
-    <button type="button" class="btn btn-primary">
-        <a href="{{ route('books.featured') }}" style="color: white; text-decoration: none;">Featured Book</a>
+    {{-- Games --}}
+    <button type="button" class="btn {{ request()->is('games*') ? 'btn-warning' : 'btn-primary' }}">
+        <a href="{{ route('games.index') }}" style="color: white; text-decoration: none;">Games</a>
     </button>
 
 </nav>
