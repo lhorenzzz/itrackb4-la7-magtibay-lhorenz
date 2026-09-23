@@ -44,7 +44,7 @@ class GameController extends Controller
 
     public function filter(string $value = null)
     {
-        if (is_null($value)) {  
+        if (is_null($value)) {
             return redirect()->route('games.index');
         }
         return redirect()->route('games.index', ['genre' => $value]);
@@ -54,12 +54,12 @@ class GameController extends Controller
     {
         $games = $this->games();
 
-        $genre = $request->query('genre', null);
-        $platform = $request->query('platform', null);
+        $genre = $request->query('genre', 'all');
+        $platform = $request->query('platform', 'all');
 
         $filtered = collect($games)->filter(function ($game) use ($genre, $platform) {
-            $matchGenre = $genre == null || $game['genre'] == $genre;
-            $matchPlatform = $platform == null || $game['platform'] == $platform;
+            $matchGenre = $genre == 'all' || $game['genre'] == $genre;
+            $matchPlatform = $platform == 'all' || $game['platform'] == $platform;
 
             return $matchGenre && $matchPlatform;
         });
@@ -67,9 +67,7 @@ class GameController extends Controller
         return view('games.index', [
             'games' => $filtered,
             'genre' => $genre ?? '',
-            'platform' => $platform ?? '',
-            'genres' => collect($games)->pluck('genre')->unique()->values(),
-            'platforms' => collect($games)->pluck('platform')->unique()->values(),
+            'platform' => $platform ?? ''
         ]);
     }
 
