@@ -1,4 +1,5 @@
 <nav>
+    <br>
     {{-- Books --}}
     <button type="button" class="btn {{ request()->is('books*') ? 'btn-warning' : 'btn-primary' }}">
         <a href="{{ route('books.index') }}" style="color: white; text-decoration: none;">Books</a>

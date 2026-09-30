@@ -8,38 +8,17 @@ class GameController extends Controller
 {
     private function games()
     {
-        return [
-            1 => [
-                'id' => 1,
-                'name' => 'The Legend of Zelda: Breath of the Wild',
-                'genre' => 'Action-Adventure',
-                'platform' => 'Nintendo'
-            ],
-            2 => [
-                'id' => 2,
-                'name' => 'Elden Ring',
-                'genre' => 'RPG',
-                'platform' => 'PC'
-            ],
-            3 => [
-                'id' => 3,
-                'name' => 'Stardew Valley',
-                'genre' => 'Simulation',
-                'platform' => 'PC'
-            ],
-            4 => [
-                'id' => 4,
-                'name' => 'The Witcher 3: Wild Hunt',
-                'genre' => 'RPG',
-                'platform' => 'PC'
-            ],
-            5 => [
-                'id' => 5,
-                'name' => 'Call of Duty: Modern Warfare',
-                'genre' => 'Shooter',
-                'platform' => 'PC'
-            ],
-        ];
+        $path = storage_path('app/games.json');
+
+        return json_decode(file_get_contents($path), true);
+    }
+
+    private function saveGames(array $games)
+    {
+        file_put_contents(
+            storage_path('app/games.json'),
+            json_encode($games, JSON_PRETTY_PRINT)
+        );
     }
 
     public function filter(string $value = null)
@@ -67,18 +46,37 @@ class GameController extends Controller
         return view('games.index', [
             'games' => $filtered,
             'genre' => $genre ?? '',
-            'platform' => $platform ?? ''
+            'platform' => $platform ?? '',
+            'genres' => collect($games)->pluck('genre')->unique()->values(),
+            'platforms' => collect($games)->pluck('platform')->unique()->values(),
         ]);
     }
 
     public function create()
     {
-        //
+        return view('games.create');
     }
 
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:50',
+            'genre' => 'required|in:Action-Adventure,RPG,Simulation,Shooter',
+            'platform' => 'required|in:PC,PlayStation,Xbox,Nintendo Switch',
+        ]);
+
+        $games = $this->games();
+        $newId = count($games) + 1;
+        $games[$newId] = [
+            'id' => $newId,
+            'name' => $validatedData['name'],
+            'genre' => $validatedData['genre'],
+            'platform' => $validatedData['platform'],
+        ];
+
+        $this->saveGames($games);
+
+        return redirect()->route('games.index')->with('success', 'Game created successfully!');
     }
 
     public function show(string $id)

@@ -12,16 +12,20 @@
 
 <body>
 
-    <div class="p-3 mb-2 bg-light text-dark" style="font-family: 'Arial', sans-serif;">
-        <h5>Good Day, Lhorenz T. Magtibay!</h5>
-        <br>
+    @if (session('success'))
+        <div class="container mt-3">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    @endif
+
+    <div class="container">
         @yield('content')
-
-        {{-- @include('partials._nav') --}}
-
     </div>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

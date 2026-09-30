@@ -3,8 +3,9 @@
 @section('title', 'Game Recommendations')
 
 @section('content')
-   @include('partials._nav')
+    @include('partials._nav')
     <h2 class="mb-3">List of Games</h2>
+
 
     {{-- B5: state which filters are currently active --}}
     <div class="mb-3">
@@ -26,26 +27,31 @@
             </span>
             {{-- B3: clear both filters at once --}}
             <a href="{{ route('games.index') }}" class="btn btn-sm btn-outline-secondary ms-2">Clear Filter</a>
+
+            <a href="{{ route('games.create') }}" class="btn btn-sm btn-outline-secondary ms-2">Add Game</a>
+
         @endif
     </div>
 
     {{-- B1/B2/B4: every link passes BOTH current values, so switching one
-         filter keeps the other one applied. --}}
+    filter keeps the other one applied. --}}
     <div class="mb-2">
         <strong>Genre:</strong>
-        <a href="{{ route('games.index', ['genre' => '', 'platform' => $platform]) }}" class="btn btn-sm btn-outline-primary">All</a>
+        <a href="{{ route('games.index', ['genre' => '', 'platform' => $platform]) }}"
+            class="btn btn-sm btn-outline-primary">All</a>
         @foreach ($genres as $g)
             <a href="{{ route('games.index', ['genre' => $g, 'platform' => $platform]) }}"
-               class="btn btn-sm btn-outline-primary">{{ $g }}</a>
+                class="btn btn-sm btn-outline-primary">{{ $g }}</a>
         @endforeach
     </div>
 
     <div class="mb-3">
         <strong>Platform:</strong>
-        <a href="{{ route('games.index', ['genre' => $genre, 'platform' => '']) }}" class="btn btn-sm btn-outline-secondary">All</a>
+        <a href="{{ route('games.index', ['genre' => $genre, 'platform' => '']) }}"
+            class="btn btn-sm btn-outline-secondary">All</a>
         @foreach ($platforms as $p)
             <a href="{{ route('games.index', ['genre' => $genre, 'platform' => $p]) }}"
-               class="btn btn-sm btn-outline-secondary">{{ $p }}</a>
+                class="btn btn-sm btn-outline-secondary">{{ $p }}</a>
         @endforeach
     </div>
 
