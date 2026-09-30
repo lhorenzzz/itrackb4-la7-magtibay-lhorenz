@@ -35,10 +35,12 @@ class GameController extends Controller
 
         $genre = $request->query('genre', 'all');
         $platform = $request->query('platform', 'all');
+        $year = $request->query('year', 'all');
 
-        $filtered = collect($games)->filter(function ($game) use ($genre, $platform) {
+        $filtered = collect($games)->filter(function ($game) use ($genre, $platform, $year) {
             $matchGenre = $genre == 'all' || $game['genre'] == $genre;
             $matchPlatform = $platform == 'all' || $game['platform'] == $platform;
+            $year = $year == 'all' || $game['year'] == $year;
 
             return $matchGenre && $matchPlatform;
         });
@@ -49,6 +51,7 @@ class GameController extends Controller
             'platform' => $platform ?? '',
             'genres' => collect($games)->pluck('genre')->unique()->values(),
             'platforms' => collect($games)->pluck('platform')->unique()->values(),
+            'year' => collect($games)->pluck('year')->unique()->values(),
         ]);
     }
 
@@ -60,9 +63,11 @@ class GameController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:50',
+            'name' => 'required|max:50',
             'genre' => 'required|in:Action-Adventure,RPG,Simulation,Shooter',
             'platform' => 'required|in:PC,PlayStation,Xbox,Nintendo Switch',
+            'year' => 'required|integer|min:1970|max:' . date('Y'),
+
         ]);
 
         $games = $this->games();
@@ -72,6 +77,7 @@ class GameController extends Controller
             'name' => $validatedData['name'],
             'genre' => $validatedData['genre'],
             'platform' => $validatedData['platform'],
+            'year' => $validatedData['year'],
         ];
 
         $this->saveGames($games);

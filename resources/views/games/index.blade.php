@@ -62,6 +62,7 @@
                 <th>Name</th>
                 <th>Genre</th>
                 <th>Platform</th>
+                <th>Year</th>
             </tr>
         </thead>
         <tbody>
@@ -80,10 +81,11 @@
                         </a>
                     </td>
                     <td>{{ $game['platform'] }}</td>
+                    <td>{{ $game['year'] }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5">No Games Available</td>
+                    <td colspan="6">No Games Available</td>
                 </tr>
             @endforelse
         </tbody>

@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('title', 'Add Game')
-
 @section('content')
     <br>
     <div class="card">
@@ -23,7 +22,8 @@
                     <label for="genre" class="form-label">Genre</label>
                     <select name="genre" id="genre" class="form-select @error('genre') is-invalid @enderror">
                         <option value="">Select Genre</option>
-                        <option value="Action" {{ old('genre') == 'Action-Adventure' ? 'selected' : '' }}>Action-Adventure</option>
+                        <option value="Action-Adventure" {{ old('genre') == 'Action-Adventure' ? 'selected' : '' }}>
+                            Action-Adventure</option>
                         <option value="RPG" {{ old('genre') == 'RPG' ? 'selected' : '' }}>RPG</option>
                         <option value="Simulation" {{ old('genre') == 'Simulation' ? 'selected' : '' }}>Simulation</option>
                         <option value="Strategy" {{ old('genre') == 'Shooter' ? 'selected' : '' }}>Shooter</option>
@@ -43,8 +43,18 @@
                         <option value="Xbox" {{ old('platform') == 'Xbox' ? 'selected' : '' }}>Xbox</option>
                         <option value="Nintendo Switch" {{ old('platform') == 'Nintendo Switch' ? 'selected' : '' }}>Nintendo
                             Switch</option>
+
                     </select>
                     @error('platform')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="year" class="form-label">Year</label>
+                    <input type="number" class="form-control @error('year') is-invalid @enderror" id="year" name="year"
+                        value="{{ old('year') }}">
+                    @error('year')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
@@ -56,7 +66,4 @@
             <!-- Game creation form would go here -->
         </div>
     </div>
-
-
-
 @endsection
